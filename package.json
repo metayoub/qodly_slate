@@ -2,7 +2,7 @@
   "app_id": "qodly_783daecc8bfc2a76fd81",
   "name": "qodly-slate",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "author": {
     "name": "Qodly Team",
@@ -32,11 +32,16 @@
     "@ws-ui/craftjs-layers": "^0.2.2",
     "@ws-ui/craftjs-utils": "^0.2.1",
     "@ws-ui/webform-editor": "0.2.13",
+    "immutable": "^4.3.6",
+    "is-url": "^1.2.4",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "slate": "^0.103.0",
+    "slate-react": "^0.99.0"
   },
   "devDependencies": {
     "@qodly/cli": "^0.1.46",
+    "@types/is-url": "^1.2.32",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
