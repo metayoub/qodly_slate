@@ -12,7 +12,7 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
     case 'link':
       return (
         <a
-          style={{ ...style, cursor: 'pointer' }}
+          style={{ ...style, cursor: 'pointer', textDecoration: 'underline' }}
           {...attributes}
           href={element.url}
           target="_blank"

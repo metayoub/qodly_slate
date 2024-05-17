@@ -1,13 +1,13 @@
 import { useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Editor, createEditor } from 'slate';
+import { Transforms, createEditor } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
 import { Toolbar, Element, Leaf } from './UI';
-import isUrl from 'is-url';
+
 import './TextEditor.css';
-import useLink from './Hooks/useLink';
+import { withInlines } from './Hooks/withInlines';
 
 const TextEditor: FC<ITextEditorProps> = ({ name, style, className, classNames = [] }) => {
   const { connect } = useRenderer();
@@ -15,7 +15,6 @@ const TextEditor: FC<ITextEditorProps> = ({ name, style, className, classNames =
   const {
     sources: { datasource: ds },
   } = useSources();
-  const { wrapLink } = useLink();
 
   const initialValue = [
     {
@@ -23,22 +22,6 @@ const TextEditor: FC<ITextEditorProps> = ({ name, style, className, classNames =
       children: [{ text: 'A line of text in a paragraph.' }],
     },
   ];
-
-  const withInlines = (editor: Editor) => {
-    const { insertText, isInline } = editor;
-
-    editor.isInline = (element: any) => ['link'].includes(element.type) || isInline(element);
-
-    editor.insertText = (text) => {
-      if (text && isUrl(text)) {
-        wrapLink(editor, text);
-      } else {
-        insertText(text);
-      }
-    };
-
-    return editor;
-  };
 
   const [editor] = useState(() => withInlines(withReact(createEditor())));
 
@@ -76,6 +59,7 @@ const TextEditor: FC<ITextEditorProps> = ({ name, style, className, classNames =
           className="p-2 h-full no-tailwind"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
+          onBlur={() => Transforms.deselect(editor)}
         />
       </Slate>
     </div>
