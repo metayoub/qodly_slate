@@ -8,6 +8,7 @@ import { Toolbar, Element, Leaf } from './UI';
 
 import './TextEditor.css';
 import { withInlines } from './Hooks/withInlines';
+import withEmbeds from './Hooks/withEmbeds';
 
 const TextEditor: FC<ITextEditorProps> = ({ name, style, className, classNames = [] }) => {
   const { connect } = useRenderer();
@@ -23,7 +24,7 @@ const TextEditor: FC<ITextEditorProps> = ({ name, style, className, classNames =
     },
   ];
 
-  const [editor] = useState(() => withInlines(withReact(createEditor())));
+  const [editor] = useState(() => withInlines(withReact(withEmbeds(createEditor()))));
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);

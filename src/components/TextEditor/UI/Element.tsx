@@ -56,6 +56,15 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
           {children}
         </ol>
       );
+    case 'video':
+      return (
+        <div {...attributes}>
+          <div contentEditable={false}>
+            <iframe src={element.url} allowFullScreen title="Embedded video" />
+          </div>
+          {children}
+        </div>
+      );
     default:
       return (
         <p style={style} {...attributes} className="element-paragraph">

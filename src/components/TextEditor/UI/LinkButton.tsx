@@ -38,7 +38,6 @@ const LinkButton: FC<LinkButton> = ({ icon: Icon, readonly }) => {
   };
 
   const handleInsertLink = (url: string) => {
-    console.log('handleInsertLink', editor.selection);
     ReactEditor.focus(editor as ReactEditor);
     editor.selection = selection;
     insertLink(editor, url);

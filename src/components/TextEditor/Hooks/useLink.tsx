@@ -2,6 +2,7 @@ import { Editor, Transforms, Range, Descendant, Element as SlateElement } from '
 
 // Define the LinkElement type
 export type LinkElement = { type: 'link'; url: string; children: Descendant[] };
+export type VideoElement = { type: 'video'; url: string; children: Descendant[] };
 
 const useLink = () => {
   const isLinkActive = (editor: Editor) => {
