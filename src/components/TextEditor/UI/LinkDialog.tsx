@@ -7,6 +7,7 @@ interface LinkDialog {
 
 const LinkDialog: FC<LinkDialog> = ({ position, onClose, onInsertLink }) => {
   const [url, setUrl] = useState('');
+  const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -15,20 +16,19 @@ const LinkDialog: FC<LinkDialog> = ({ position, onClose, onInsertLink }) => {
   };
 
   // TODO: fix closing dialog on click outside
-  /*useEffect(() => {
-    console.log('ff');
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dialogRef.current && !dialogRef.current.contains(event.target as Node)) {
-        console.log('dd');
+      if (open && dialogRef.current && !dialogRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
+    setOpen(true);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]);*/
+  }, [onClose]);
   return (
     <div
       ref={dialogRef}
