@@ -5,3 +5,5 @@ export { default as Button } from './Button';
 export { default as Element } from './Element';
 export { default as Leaf } from './Leaf';
 export { default as LinkButton } from './LinkButton';
+export { default as ImageButton } from './ImageButton';
+export { default as VideoButton } from './VideoButton';

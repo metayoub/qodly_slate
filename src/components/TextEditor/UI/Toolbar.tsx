@@ -19,7 +19,6 @@ import {
   MdOutlineFormatAlignJustify,
   MdOutlineInsertLink,
   MdOutlineStrikethroughS,
-  MdOutlineLinkOff,
 } from 'react-icons/md';
 
 const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
@@ -39,8 +38,7 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
       <BlockButton icon={MdOutlineFormatAlignCenter} format="center" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatAlignRight} format="right" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatAlignJustify} format="justify" readonly={readonly} />
-      <LinkButton icon={MdOutlineInsertLink} format="add" readonly={readonly} />
-      <LinkButton icon={MdOutlineLinkOff} format="delete" readonly={readonly} />
+      <LinkButton icon={MdOutlineInsertLink} readonly={readonly} />
     </div>
   );
 };
