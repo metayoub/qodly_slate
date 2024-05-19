@@ -1,7 +1,5 @@
 import { Editor, Transforms, Descendant, Element as SlateElement, Range } from 'slate';
 
-// Define the LinkElement type
-export type LinkElement = { type: 'link'; url: string; children: Descendant[] };
 export type VideoElement = { type: 'video'; url: string; children: Descendant[] };
 
 const useVideo = () => {
@@ -14,8 +12,7 @@ const useVideo = () => {
   };
 
   const unwrapVideo = (editor: Editor) => {
-    // TODO: not working
-    console.log('unwrapVideo');
+    // TODO: not working, mayb be using // Transforms.removeNodes(editor, { at: path }) will fix it
     Transforms.delete(editor, {
       at: editor.selection as Range,
     });

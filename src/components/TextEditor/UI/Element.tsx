@@ -1,5 +1,10 @@
 import { FC } from 'react';
 import './Element.css';
+import { MdDelete } from 'react-icons/md';
+import { Button } from '.';
+import { useFocused, useSelected, useSlate } from 'slate-react';
+import useImage from '../Hooks/useImage';
+
 interface Element {
   attributes: any;
   children: any;
@@ -9,6 +14,40 @@ interface Element {
 const Element: FC<Element> = ({ attributes, children, element }) => {
   const style = { textAlign: element.align };
   switch (element.type) {
+    case 'image':
+      const selected = useSelected();
+      const focused = useFocused();
+      const editor = useSlate();
+      const { unwrapImage } = useImage();
+      return (
+        <div {...attributes}>
+          <div contentEditable={false} style={{ position: 'relative', width: 'fit-content' }}>
+            <img
+              src={element.url}
+              style={{
+                display: 'block',
+                maxHeight: '20em',
+                maxWidth: '100%',
+                boxShadow: selected && focused ? '0 0 0 3px #B4D5FF' : 'none',
+              }}
+            />
+            <Button
+              active
+              onClick={() => unwrapImage(editor)}
+              style={{
+                position: 'absolute',
+                top: '0.5em',
+                right: '0.5em',
+                BackgroundColor: 'white',
+                display: selected && focused ? 'inline' : 'none',
+              }}
+            >
+              <MdDelete />
+            </Button>
+          </div>
+          {children}
+        </div>
+      );
     case 'link':
       return (
         <a

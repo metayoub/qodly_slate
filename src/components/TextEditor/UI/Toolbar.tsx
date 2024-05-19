@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { MarkButton, BlockButton, LinkButton, VideoButton } from './';
+import { MarkButton, BlockButton, LinkButton, VideoButton, ImageButton } from './';
 interface ToolbarProps {
   readonly?: boolean;
 }
@@ -20,6 +20,7 @@ import {
   MdOutlineInsertLink,
   MdOutlineStrikethroughS,
   MdOutlineVideoFile,
+  MdOutlineImage,
 } from 'react-icons/md';
 
 const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
@@ -39,6 +40,7 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
       <BlockButton icon={MdOutlineFormatAlignCenter} format="center" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatAlignRight} format="right" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatAlignJustify} format="justify" readonly={readonly} />
+      <ImageButton icon={MdOutlineImage} readonly={readonly} />
       <LinkButton icon={MdOutlineInsertLink} readonly={readonly} />
       <VideoButton icon={MdOutlineVideoFile} readonly={readonly} />
     </div>
