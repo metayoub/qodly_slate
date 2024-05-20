@@ -18,7 +18,7 @@ const ImageDialog: FC<ImageDialog> = ({ position, onClose, onInsertLink }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (open && dialogRef.current && !dialogRef.current.contains(event.target as Node)) {
+      if (open && !dialogRef.current?.contains(event.target as Node)) {
         onClose();
       }
     };

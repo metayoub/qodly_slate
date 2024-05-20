@@ -2,7 +2,7 @@ import isUrl from 'is-url';
 import { Editor } from 'slate';
 import useLink from './useLink';
 
-export const withInlines = (editor: Editor) => {
+const withInlines = (editor: Editor) => {
   const { insertText, isInline } = editor;
   const { wrapLink } = useLink();
 
@@ -18,3 +18,5 @@ export const withInlines = (editor: Editor) => {
 
   return editor;
 };
+
+export default withInlines;
