@@ -21,7 +21,10 @@ import {
   MdOutlineStrikethroughS,
   MdOutlineVideoFile,
   MdOutlineImage,
+  MdOutlineFormatColorText,
+  MdOutlineFormatColorFill,
 } from 'react-icons/md';
+import ColorPickerButton from './ColorPickerButton';
 
 const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
   return (
@@ -31,6 +34,12 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
       <MarkButton icon={MdOutlineFormatUnderlined} format="underline" readonly={readonly} />
       <MarkButton icon={MdOutlineStrikethroughS} format="strikethrough" readonly={readonly} />
       <MarkButton icon={MdOutlineCode} format="code" readonly={readonly} />
+      <ColorPickerButton icon={MdOutlineFormatColorText} readonly={readonly} format="color" />
+      <ColorPickerButton
+        icon={MdOutlineFormatColorFill}
+        readonly={readonly}
+        format="backgroundColor"
+      />
       <BlockButton icon={MdOutlineLooksOne} format="heading-one" readonly={readonly} />
       <BlockButton icon={MdOutlineLooksTwo} format="heading-two" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatQuote} format="block-quote" readonly={readonly} />
@@ -46,5 +55,5 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
     </div>
   );
 };
-
+// TODO: add : MdOutlineFormatClear to clear formatting
 export default Toolbar;

@@ -7,6 +7,8 @@ interface Leaf {
 }
 
 const Leaf: FC<Leaf> = ({ attributes, children, leaf }) => {
+  let style = {};
+
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }
@@ -27,14 +29,18 @@ const Leaf: FC<Leaf> = ({ attributes, children, leaf }) => {
     children = <del>{children}</del>;
   }
 
-  const color = leaf.color ? `${leaf.color}` : 'inherit';
+  if (leaf.color) {
+    style = { ...style, color: leaf.color };
+  }
+
+  if (leaf.backgroundColor) {
+    style = { ...style, backgroundColor: leaf.backgroundColor };
+  }
+
   const title = typeof children === 'string' ? children : undefined;
+
   return (
-    <span
-      {...attributes}
-      title={title}
-      style={leaf.text === '' ? { color, paddingLeft: '0.1px' } : { color }}
-    >
+    <span {...attributes} title={title} style={style}>
       {children}
     </span>
   );
