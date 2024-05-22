@@ -1,7 +1,7 @@
 import { useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { createEditor } from 'slate';
+import { Descendant, createEditor } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
 import { Toolbar, Element, Leaf } from './UI';
@@ -18,7 +18,8 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
       children: [{ text: 'A line of text in a paragraph.' }],
     },
   ];
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState<Descendant[]>(initialValue);
+  const [key, setKey] = useState<number>(0);
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -32,14 +33,12 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
     if (!ds) return;
 
     const listener = async (/* event */) => {
-      try {
-        const v = await ds.getValue<string>();
-        const parsedValue = v ? JSON.parse(v) : initialValue;
-        setValue(parsedValue);
-      } catch (error) {
-        console.error('Failed to parse value:', error);
-        setValue(initialValue); // Fallback to initial value in case of error
-      }
+      const v = await ds.getValue<string>();
+      if (!v) return;
+
+      const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
+      setValue(slateContent);
+      setKey((prevKey) => prevKey + 1); //to rerender the editor and reset the initial value
     };
 
     listener();
@@ -52,9 +51,10 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ds]);
 
-  const handleOnChange = (value: any) => {
+  const handleOnChange = (newValue: any) => {
+    setValue(newValue);
     if (ds) {
-      ds.setValue(null, JSON.stringify(value));
+      ds.setValue(null, newValue[0].children[0].text);
     }
   };
 
@@ -64,7 +64,12 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
       style={style}
       className={cn(className, classNames, 'border border-gray-300 rounded-md')}
     >
-      <Slate editor={editor as ReactEditor} initialValue={value} onChange={handleOnChange}>
+      <Slate
+        editor={editor as ReactEditor}
+        key={key}
+        initialValue={value}
+        onChange={handleOnChange}
+      >
         <Toolbar></Toolbar>
         <Editable
           style={{ padding: '12px' }}
