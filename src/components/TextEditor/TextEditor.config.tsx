@@ -57,6 +57,11 @@ export default {
   },
   defaultProps: {
     readOnly: false,
+    style: {
+      borderWidth: '1px',
+      borderRadius: '6px',
+      borderColor: 'inherit',
+    },
   },
 } as T4DComponentConfig<ITextEditorProps>;
 

@@ -5,7 +5,7 @@ import { Descendant, createEditor } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
 import { Toolbar, Element, Leaf } from './UI';
-
+import { BsFillInfoCircleFill } from 'react-icons/bs';
 import './TextEditor.css';
 import withInlines from './Hooks/withInlines';
 import withEmbeds from './Hooks/withEmbeds';
@@ -18,8 +18,7 @@ const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNam
       children: [{ text: 'A line of text in a paragraph.' }],
     },
   ];
-  const [value, setValue] = useState<Descendant[]>(initialValue);
-  const [isFirstLoad, setIsFirstLoad] = useState(false);
+  const [value, setValue] = useState<Descendant[] | null>(null);
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -42,7 +41,6 @@ const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNam
         const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
         setValue(slateContent);
       }
-      setIsFirstLoad(true);
     };
 
     listener();
@@ -61,23 +59,25 @@ const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNam
     }
   };
 
+  // TODO: dynamic padding
   return (
-    <div
-      ref={connect}
-      style={style}
-      className={cn(className, classNames, 'border border-gray-300 rounded-md')}
-    >
-      {isFirstLoad && (
+    <div ref={connect} style={style} className={cn(className, classNames)}>
+      {value ? (
         <Slate editor={editor as ReactEditor} initialValue={value} onChange={handleOnChange}>
-          <Toolbar></Toolbar>
+          {!readOnly && <Toolbar readonly={readOnly} />}
           <Editable
             style={{ padding: '12px' }}
-            className="p-2 h-full no-tailwind"
+            className="p-2 h-2 no-tailwind"
             renderElement={renderElement}
             renderLeaf={renderLeaf}
             readOnly={readOnly}
           />
         </Slate>
+      ) : (
+        <div className="flex h-full flex-col items-center justify-center rounded-lg border bg-purple-400 py-4 text-white">
+          <BsFillInfoCircleFill className="mb-1 h-8 w-8" />
+          <p>Please attach a datasource</p>
+        </div>
       )}
     </div>
   );
