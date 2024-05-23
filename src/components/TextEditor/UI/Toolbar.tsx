@@ -23,8 +23,10 @@ import {
   MdOutlineImage,
   MdOutlineFormatColorText,
   MdOutlineFormatColorFill,
+  MdOutlineFormatClear,
 } from 'react-icons/md';
 import ColorPickerButton from './ColorPickerButton';
+import ClearButton from './ClearButton';
 
 const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
   return (
@@ -52,8 +54,8 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
       <ImageButton icon={MdOutlineImage} readonly={readonly} />
       <LinkButton icon={MdOutlineInsertLink} readonly={readonly} />
       <VideoButton icon={MdOutlineVideoFile} readonly={readonly} />
+      <ClearButton icon={MdOutlineFormatClear} readonly={readonly} />
     </div>
   );
 };
-// TODO: add : MdOutlineFormatClear to clear formatting
 export default Toolbar;
