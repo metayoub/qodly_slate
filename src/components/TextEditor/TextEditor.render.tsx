@@ -19,7 +19,7 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
     },
   ];
   const [value, setValue] = useState<Descendant[]>(initialValue);
-  const [key, setKey] = useState<number>(0);
+  const [isFirstLoad, setIsFirstLoad] = useState(false);
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -38,7 +38,7 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
 
       const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
       setValue(slateContent);
-      setKey((prevKey) => prevKey + 1); //to rerender the editor and reset the initial value
+      setIsFirstLoad(true);
     };
 
     listener();
@@ -52,7 +52,6 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
   }, [ds]);
 
   const handleOnChange = (newValue: any) => {
-    setValue(newValue);
     if (ds) {
       ds.setValue(null, newValue[0].children[0].text);
     }
@@ -64,20 +63,17 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
       style={style}
       className={cn(className, classNames, 'border border-gray-300 rounded-md')}
     >
-      <Slate
-        editor={editor as ReactEditor}
-        key={key}
-        initialValue={value}
-        onChange={handleOnChange}
-      >
-        <Toolbar></Toolbar>
-        <Editable
-          style={{ padding: '12px' }}
-          className="p-2 h-full no-tailwind"
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-        />
-      </Slate>
+      {isFirstLoad && (
+        <Slate editor={editor as ReactEditor} initialValue={value} onChange={handleOnChange}>
+          <Toolbar></Toolbar>
+          <Editable
+            style={{ padding: '12px' }}
+            className="p-2 h-full no-tailwind"
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+          />
+        </Slate>
+      )}
     </div>
   );
 };
