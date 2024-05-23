@@ -22,17 +22,21 @@ const ImageButton: FC<ImageButton> = ({ icon: Icon, readonly }) => {
   const handleMouseDown = (event: any) => {
     if (readonly) return;
     event.preventDefault();
-    // TODO: handle when you click outside the editor, nothing should happend
-    if (isImageActive(editor)) {
-      unwrapImage(editor);
-    } else {
-      const domSelection = window.getSelection();
-      if (domSelection && domSelection.rangeCount > 0) {
-        const domRange = domSelection.getRangeAt(0);
-        const rect = domRange.getBoundingClientRect();
-        setSelection(editor.selection);
-        setDialogPosition({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
-        setShowDialog(true);
+    if (ReactEditor.isFocused(editor as ReactEditor)) {
+      if (isImageActive(editor)) {
+        unwrapImage(editor);
+      } else {
+        const domSelection = window.getSelection();
+        if (domSelection && domSelection.rangeCount > 0) {
+          const domRange = domSelection.getRangeAt(0);
+          const rect = domRange.getBoundingClientRect();
+          setSelection(editor.selection);
+          setDialogPosition({
+            top: rect.bottom + window.scrollY,
+            left: rect.left + window.scrollX,
+          });
+          setShowDialog(true);
+        }
       }
     }
   };

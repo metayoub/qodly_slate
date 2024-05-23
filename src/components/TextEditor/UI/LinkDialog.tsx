@@ -15,7 +15,6 @@ const LinkDialog: FC<LinkDialog> = ({ position, onClose, onInsertLink }) => {
     onInsertLink(url);
   };
 
-  // TODO: fix closing dialog on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (open && !dialogRef.current?.contains(event.target as Node)) {
@@ -28,7 +27,8 @@ const LinkDialog: FC<LinkDialog> = ({ position, onClose, onInsertLink }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [onClose]);
+
   return (
     <div
       ref={dialogRef}
