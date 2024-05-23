@@ -10,7 +10,7 @@ import './TextEditor.css';
 import withInlines from './Hooks/withInlines';
 import withEmbeds from './Hooks/withEmbeds';
 
-const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] }) => {
+const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNames = [] }) => {
   const { connect } = useRenderer();
   const initialValue = [
     {
@@ -71,6 +71,7 @@ const TextEditor: FC<ITextEditorProps> = ({ style, className, classNames = [] })
             className="p-2 h-full no-tailwind"
             renderElement={renderElement}
             renderLeaf={renderLeaf}
+            readOnly={readOnly}
           />
         </Slate>
       )}

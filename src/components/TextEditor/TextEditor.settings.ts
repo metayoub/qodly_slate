@@ -3,10 +3,10 @@ import { BASIC_SETTINGS, DEFAULT_SETTINGS, load } from '@ws-ui/webform-editor';
 
 const commonSettings: TSetting[] = [
   {
-    key: 'name',
-    label: 'Name',
-    type: ESetting.TEXT_FIELD,
-    defaultValue: 'Qodly',
+    key: 'readOnly',
+    label: 'Read only',
+    type: ESetting.CHECKBOX,
+    defaultValue: false,
   },
 ];
 
