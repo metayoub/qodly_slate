@@ -2,8 +2,9 @@ import { IconType } from 'react-icons';
 import { Button } from './';
 import { useSlate } from 'slate-react';
 import { FC } from 'react';
-import { Editor, Transforms } from 'slate';
+import { Editor, Transforms, Element as SlateElement } from 'slate';
 import has from 'lodash/has';
+import { LinkElement } from '../Hooks/useLink';
 
 interface ClearButton {
   icon: IconType;
@@ -33,7 +34,11 @@ const ClearButton: FC<ClearButton> = ({ icon: Icon, readonly }) => {
         },
         split: false,
       });
-      // TODO : remove link
+      Transforms.unwrapNodes(editor, {
+        match: (n) =>
+          !Editor.isEditor(n) && SlateElement.isElement(n) && (n as LinkElement).type === 'link',
+        split: true,
+      });
     }
   };
 
