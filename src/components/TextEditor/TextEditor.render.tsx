@@ -35,9 +35,13 @@ const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNam
     const listener = async (/* event */) => {
       const v = await ds.getValue<string>();
       if (!v) return;
-
-      const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
-      setValue(slateContent);
+      try {
+        const parsedValue = v ? JSON.parse(v) : initialValue;
+        setValue(parsedValue);
+      } catch (error) {
+        const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
+        setValue(slateContent);
+      }
       setIsFirstLoad(true);
     };
 
@@ -53,7 +57,7 @@ const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNam
 
   const handleOnChange = (newValue: any) => {
     if (ds) {
-      ds.setValue(null, newValue[0].children[0].text);
+      ds.setValue(null, JSON.stringify(newValue));
     }
   };
 

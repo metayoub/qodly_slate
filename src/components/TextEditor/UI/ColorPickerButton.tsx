@@ -4,7 +4,7 @@ import { SketchPicker } from 'react-color';
 import { Editor, BaseRange } from 'slate';
 import { Button } from '.';
 import { IconType } from 'react-icons';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 interface ColorPickerButton {
   icon: IconType;
