@@ -56,6 +56,7 @@ export default {
     },
   },
   defaultProps: {
+    iterableChild: true,
     readOnly: false,
     style: {
       borderWidth: '1px',

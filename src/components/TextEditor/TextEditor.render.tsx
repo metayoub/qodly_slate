@@ -1,4 +1,4 @@
-import { useRenderer, useSources } from '@ws-ui/webform-editor';
+import { splitDatasourceID, useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Descendant, createEditor } from 'slate';
@@ -10,7 +10,13 @@ import './TextEditor.css';
 import withInlines from './Hooks/withInlines';
 import withEmbeds from './Hooks/withEmbeds';
 
-const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNames = [] }) => {
+const TextEditor: FC<ITextEditorProps> = ({
+  datasource,
+  readOnly,
+  style,
+  className,
+  classNames = [],
+}) => {
   const { connect } = useRenderer();
   const initialValue = [
     {
@@ -18,31 +24,44 @@ const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNam
       children: [{ text: 'A line of text in a paragraph.' }],
     },
   ];
-  const [value, setValue] = useState<Descendant[] | null>(null);
+  const [value, updateValue] = useState<Descendant[] | null>(null);
+
+  const setValue = (value: Descendant[]) => {
+    editor.children = value;
+    updateValue(value);
+  };
+
   const {
     sources: { datasource: ds },
   } = useSources();
+
+  const { id: datasourceID } = splitDatasourceID(datasource);
 
   const [editor] = useState(() => withInlines(withReact(withEmbeds(createEditor()))));
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
 
+  const listener = async (/* event */) => {
+    const v = await ds.getValue<string>();
+    try {
+      const parsedValue = v ? JSON.parse(v) : initialValue;
+      setValue(parsedValue);
+    } catch (error) {
+      const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
+      setValue(slateContent);
+    }
+  };
+
   useEffect(() => {
-    if (!ds) return;
+    //handles iterator datasource
+    if (!ds || !datasourceID.startsWith('$')) return;
+    listener();
+  }, []);
 
-    const listener = async (/* event */) => {
-      const v = await ds.getValue<string>();
-      if (!v) return;
-      try {
-        const parsedValue = v ? JSON.parse(v) : initialValue;
-        setValue(parsedValue);
-      } catch (error) {
-        const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
-        setValue(slateContent);
-      }
-    };
-
+  useEffect(() => {
+    //handles standard ds
+    if (!ds || datasourceID.startsWith('$')) return;
     listener();
 
     ds.addListener('changed', listener);
@@ -54,7 +73,8 @@ const TextEditor: FC<ITextEditorProps> = ({ readOnly, style, className, classNam
   }, [ds]);
 
   const handleOnChange = (newValue: any) => {
-    if (ds) {
+    if (ds && !datasourceID.startsWith('$')) {
+      //you can only set the value on non iterator ds
       ds.setValue(null, JSON.stringify(newValue));
     }
   };
