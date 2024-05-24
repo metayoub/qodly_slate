@@ -66,6 +66,24 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
           {children}
         </ul>
       );
+    case 'heading-one':
+      return (
+        <h1 className={`${alignClass} text-3xl`} {...attributes}>
+          {children}
+        </h1>
+      );
+    case 'heading-two':
+      return (
+        <h2 className={`${alignClass} text-2xl`} {...attributes}>
+          {children}
+        </h2>
+      );
+    case 'heading-three':
+      return (
+        <h3 className={`${alignClass} text-xl`} {...attributes}>
+          {children}
+        </h3>
+      );
     case 'list-item':
       return (
         <li className={alignClass} {...attributes}>

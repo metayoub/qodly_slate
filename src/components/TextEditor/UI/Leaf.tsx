@@ -8,7 +8,6 @@ interface Leaf {
 
 const Leaf: FC<Leaf> = ({ attributes, children, leaf }) => {
   let style = {};
-  const textSizeClass = leaf.h1 ? 'text-2xl' : leaf.h2 ? 'text-xl' : leaf.h3 ? 'text-lg' : '';
 
   const leafClasses = cn({
     'font-bold': leaf.bold,
@@ -16,7 +15,6 @@ const Leaf: FC<Leaf> = ({ attributes, children, leaf }) => {
     italic: leaf.italic,
     underline: leaf.underline,
     'line-through': leaf.strikethrough,
-    [textSizeClass]: textSizeClass,
   });
 
   if (leaf.code) {
