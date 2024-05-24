@@ -4,7 +4,7 @@ The text editor component provided by Slate, is a versatile tool that will enabl
 
 ## Text editor component
 
-![textEditor](https://github.com/metayoub/qodly_slate//blob/develop/public/textEditor.png)
+![textEditor](https://github.com/metayoub/qodly_slate/blob/develop/public/textEditor.png)
 
 ### Properties
 
