@@ -56,10 +56,15 @@ export default {
     },
   },
   defaultProps: {
-    name: 'Qodly',
+    readOnly: false,
+    style: {
+      borderWidth: '1px',
+      borderRadius: '6px',
+      borderColor: 'inherit',
+    },
   },
 } as T4DComponentConfig<ITextEditorProps>;
 
 export interface ITextEditorProps extends webforms.ComponentProps {
-  name?: string;
+  readOnly?: boolean;
 }

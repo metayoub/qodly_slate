@@ -23,16 +23,21 @@ const LinkButton: FC<LinkButton> = ({ icon: Icon, readonly }) => {
     if (readonly) return;
     event.preventDefault();
 
-    if (isLinkActive(editor)) {
-      unwrapLink(editor);
-    } else {
-      const domSelection = window.getSelection();
-      if (domSelection && domSelection.rangeCount > 0) {
-        const domRange = domSelection.getRangeAt(0);
-        const rect = domRange.getBoundingClientRect();
-        setDialogPosition({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
-        setSelection(editor.selection);
-        setShowDialog(true);
+    if (ReactEditor.isFocused(editor as ReactEditor)) {
+      if (isLinkActive(editor)) {
+        unwrapLink(editor);
+      } else {
+        const domSelection = window.getSelection();
+        if (domSelection && domSelection.rangeCount > 0) {
+          const domRange = domSelection.getRangeAt(0);
+          const rect = domRange.getBoundingClientRect();
+          setDialogPosition({
+            top: rect.bottom + window.scrollY,
+            left: rect.left + window.scrollX,
+          });
+          setSelection(editor.selection);
+          setShowDialog(true);
+        }
       }
     }
   };
