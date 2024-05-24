@@ -6,7 +6,6 @@ import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
 import { Toolbar, Element, Leaf } from './UI';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
-import './TextEditor.css';
 import withInlines from './Hooks/withInlines';
 import withEmbeds from './Hooks/withEmbeds';
 
@@ -86,8 +85,7 @@ const TextEditor: FC<ITextEditorProps> = ({
         <Slate editor={editor as ReactEditor} initialValue={value} onChange={handleOnChange}>
           {!readOnly && <Toolbar readonly={readOnly} />}
           <Editable
-            style={{ padding: '12px' }}
-            className="p-2 h-2 no-tailwind"
+            className="p-2"
             renderElement={renderElement}
             renderLeaf={renderLeaf}
             readOnly={readOnly}

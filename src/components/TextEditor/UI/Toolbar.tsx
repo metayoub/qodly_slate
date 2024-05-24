@@ -10,6 +10,7 @@ import {
   MdOutlineCode,
   MdOutlineLooksOne,
   MdOutlineLooksTwo,
+  MdOutlineLooks3,
   MdOutlineFormatQuote,
   MdOutlineFormatListNumbered,
   MdOutlineFormatListBulleted,
@@ -42,8 +43,9 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
         readonly={readonly}
         format="backgroundColor"
       />
-      <BlockButton icon={MdOutlineLooksOne} format="heading-one" readonly={readonly} />
-      <BlockButton icon={MdOutlineLooksTwo} format="heading-two" readonly={readonly} />
+      <MarkButton icon={MdOutlineLooksOne} format="h1" readonly={readonly} />
+      <MarkButton icon={MdOutlineLooksTwo} format="h2" readonly={readonly} />
+      <MarkButton icon={MdOutlineLooks3} format="h3" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatQuote} format="block-quote" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatListNumbered} format="numbered-list" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatListBulleted} format="bulleted-list" readonly={readonly} />
