@@ -1,5 +1,5 @@
 import { FC } from 'react';
-
+import cn from 'classnames';
 interface Leaf {
   attributes: any;
   children: any;
@@ -9,24 +9,20 @@ interface Leaf {
 const Leaf: FC<Leaf> = ({ attributes, children, leaf }) => {
   let style = {};
 
-  if (leaf.bold) {
-    children = <strong>{children}</strong>;
-  }
+  const leafClasses = cn({
+    'font-bold': leaf.bold,
+    'font-mono': leaf.code,
+    italic: leaf.italic,
+    underline: leaf.underline,
+    'line-through': leaf.strikethrough,
+  });
 
   if (leaf.code) {
-    children = <code>{children}</code>;
-  }
-
-  if (leaf.italic) {
-    children = <em>{children}</em>;
-  }
-
-  if (leaf.underline) {
-    children = <u>{children}</u>;
-  }
-
-  if (leaf.strikethrough) {
-    children = <del>{children}</del>;
+    children = (
+      <code className="block whitespace-pre overflow-x-scroll p-4 space-x-4 bg-gray-800 text-white">
+        {children}
+      </code>
+    );
   }
 
   if (leaf.color) {
@@ -40,7 +36,7 @@ const Leaf: FC<Leaf> = ({ attributes, children, leaf }) => {
   const title = typeof children === 'string' ? children : undefined;
 
   return (
-    <span {...attributes} title={title} style={style}>
+    <span {...attributes} title={title} className={leafClasses} style={style}>
       {children}
     </span>
   );
