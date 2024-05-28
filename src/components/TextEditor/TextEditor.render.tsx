@@ -8,6 +8,7 @@ import { Toolbar, Element, Leaf } from './UI';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
 import withInlines from './Hooks/withInlines';
 import withEmbeds from './Hooks/withEmbeds';
+import handleHotKey from './Utils/Hotkeys';
 
 const TextEditor: FC<ITextEditorProps> = ({
   datasource,
@@ -89,6 +90,7 @@ const TextEditor: FC<ITextEditorProps> = ({
             renderElement={renderElement}
             renderLeaf={renderLeaf}
             readOnly={readOnly}
+            onKeyDown={(e) => handleHotKey(editor, e)}
           />
         </Slate>
       ) : (
