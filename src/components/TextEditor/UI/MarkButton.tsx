@@ -1,8 +1,8 @@
 import { useSlate } from 'slate-react';
 import { Button } from './';
 import { IconType } from 'react-icons';
-import { Editor } from 'slate';
 import { FC } from 'react';
+import useButton from '../Hooks/useButton';
 interface MarkButton {
   icon: IconType;
   format: string;
@@ -11,20 +11,7 @@ interface MarkButton {
 
 const MarkButton: FC<MarkButton> = ({ icon: Icon, format, readonly }) => {
   const editor = useSlate();
-  const isMarkActive = (editor: Editor, format: string) => {
-    const marks = Editor.marks(editor) as Record<string, any>;
-    return marks ? marks[format] === true : false;
-  };
-
-  const toggleMark = (editor: Editor, format: string) => {
-    const isActive = isMarkActive(editor, format);
-    if (isActive) {
-      Editor.removeMark(editor, format);
-    } else {
-      Editor.addMark(editor, format, true);
-    }
-  };
-
+  const { isMarkActive, toggleMark } = useButton();
   return (
     <Button
       active={isMarkActive(editor, format)}
