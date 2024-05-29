@@ -8,6 +8,7 @@ import { Toolbar, Element, Leaf } from './UI';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
 import withInlines from './Hooks/withInlines';
 import withEmbeds from './Hooks/withEmbeds';
+import useCodeEditor from './Hooks/useCodeEditor';
 
 const TextEditor: FC<ITextEditorProps> = ({
   datasource,
@@ -40,6 +41,7 @@ const TextEditor: FC<ITextEditorProps> = ({
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
+  const { hightlightCode } = useCodeEditor();
 
   const listener = async (/* event */) => {
     const v = await ds.getValue<string>();
@@ -89,6 +91,7 @@ const TextEditor: FC<ITextEditorProps> = ({
             renderElement={renderElement}
             renderLeaf={renderLeaf}
             readOnly={readOnly}
+            decorate={hightlightCode}
           />
         </Slate>
       ) : (
