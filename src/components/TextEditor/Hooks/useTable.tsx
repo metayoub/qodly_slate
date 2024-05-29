@@ -1,5 +1,5 @@
-import { Editor, Path, Transforms } from 'slate';
-
+import { Editor, Path, Transforms, Node } from 'slate';
+import has from 'lodash/has';
 const useTable = () => {
   //detecting the positions/Path of the current row/cell
   const getRowPosition = (editor: Editor): Path | null => {
@@ -72,6 +72,11 @@ const useTable = () => {
     const rowPath = getRowPosition(editor);
     if (rowPath) {
       Transforms.removeNodes(editor, { at: rowPath });
+      const cellPath = Path.parent(rowPath);
+      const rowNode: Node = Node.get(editor, cellPath);
+      if (rowNode && has((rowNode as any).children[0], 'text')) {
+        Transforms.removeNodes(editor, { at: cellPath });
+      }
     }
   };
 
@@ -79,6 +84,11 @@ const useTable = () => {
     const cellPath = getCellPosition(editor);
     if (cellPath) {
       Transforms.removeNodes(editor, { at: cellPath });
+      const rowPath = Path.parent(cellPath);
+      const rowNode: Node = Node.get(editor, rowPath);
+      if (rowNode && has((rowNode as any).children[0], 'text')) {
+        Transforms.removeNodes(editor, { at: rowPath });
+      }
     }
   };
 

@@ -21,7 +21,7 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
         <div className="relative">
           {displayed && <TableToolBar />}
           <table
-            className="table-auto w-full border-collapse border border-gray-400"
+            className="table-fixed w-full border-collapse border border-gray-400"
             {...attributes}
           >
             <tbody>{children}</tbody>
