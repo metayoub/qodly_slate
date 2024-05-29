@@ -16,20 +16,17 @@ interface Table extends Element {
 
 interface Cell extends Element {
   type: 'table-cell';
-  key: string;
   children: Node[];
 }
 
 interface Row extends Element {
   type: 'table-row';
-  key: string;
   children: Cell[];
 }
 
 const createCell = (): Cell => {
   return {
     type: 'table-cell',
-    key: `cell_${Math.random().toString(36).substring(2, 15)}`,
     children: [{ type: 'paragraph', children: [{ text: '' }] }] as any,
   };
 };
@@ -38,7 +35,6 @@ const createRow = (columns: number): Row => {
   const cells = Array.from({ length: columns }, () => createCell());
   return {
     type: 'table-row',
-    key: `row_${Math.random().toString(36).substring(2, 15)}`,
     children: cells,
   };
 };
