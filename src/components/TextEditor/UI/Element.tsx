@@ -3,6 +3,7 @@ import { MdDelete } from 'react-icons/md';
 import { Button } from '.';
 import { useFocused, useSelected, useSlate } from 'slate-react';
 import useImage from '../Hooks/useImage';
+import TableToolBar from './TableToolBar';
 
 interface Element {
   attributes: any;
@@ -14,6 +15,31 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
   const alignClass = element.align ? `text-${element.align}` : '';
 
   switch (element.type) {
+    case 'table':
+      const displayed = useSelected();
+      return (
+        <div className="relative">
+          {displayed && <TableToolBar />}
+          <table
+            className="table-fixed w-full border-collapse border border-gray-400"
+            {...attributes}
+          >
+            <tbody>{children}</tbody>
+          </table>
+        </div>
+      );
+    case 'table-row':
+      return (
+        <tr className="even:bg-gray-200 hover:bg-gray-300" {...attributes}>
+          {children}
+        </tr>
+      );
+    case 'table-cell':
+      return (
+        <td className="border border-gray-400 p-2" {...attributes}>
+          {children}
+        </td>
+      );
     case 'image':
       const selected = useSelected();
       const focused = useFocused();

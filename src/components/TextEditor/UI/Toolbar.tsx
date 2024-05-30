@@ -25,9 +25,11 @@ import {
   MdOutlineFormatColorText,
   MdOutlineFormatColorFill,
   MdOutlineFormatClear,
+  MdOutlineGridOn,
 } from 'react-icons/md';
 import ColorPickerButton from './ColorPickerButton';
 import ClearButton from './ClearButton';
+import TableButton from './TableButton';
 
 const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
   return (
@@ -53,6 +55,7 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
       <BlockButton icon={MdOutlineFormatAlignCenter} format="center" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatAlignRight} format="right" readonly={readonly} />
       <BlockButton icon={MdOutlineFormatAlignJustify} format="justify" readonly={readonly} />
+      <TableButton icon={MdOutlineGridOn} readonly={readonly} />
       <ImageButton icon={MdOutlineImage} readonly={readonly} />
       <LinkButton icon={MdOutlineInsertLink} readonly={readonly} />
       <VideoButton icon={MdOutlineVideoFile} readonly={readonly} />
