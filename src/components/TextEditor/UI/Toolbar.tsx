@@ -36,7 +36,7 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
       <MarkButton icon={MdOutlineFormatItalic} format="italic" readonly={readonly} />
       <MarkButton icon={MdOutlineFormatUnderlined} format="underline" readonly={readonly} />
       <MarkButton icon={MdOutlineStrikethroughS} format="strikethrough" readonly={readonly} />
-      <MarkButton icon={MdOutlineCode} format="code" readonly={readonly} />
+      <BlockButton icon={MdOutlineCode} format="code" readonly={readonly} />
       <ColorPickerButton icon={MdOutlineFormatColorText} readonly={readonly} format="color" />
       <ColorPickerButton
         icon={MdOutlineFormatColorFill}

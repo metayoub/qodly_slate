@@ -19,12 +19,9 @@ const Leaf: FC<Leaf> = ({ attributes, children, leaf }) => {
 
   if (leaf.code) {
     children = (
-      // issue
-      <code className="block whitespace-pre overflow-x-scroll p-2 space-x-2 bg-gray-800 text-white">
-        <span {...attributes} className={`token ${leaf.token}`}>
-          {children}
-        </span>
-      </code>
+      <span {...attributes} className={`token ${leaf.token}`}>
+        {children}
+      </span>
     );
   }
 

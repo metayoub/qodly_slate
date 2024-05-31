@@ -41,7 +41,7 @@ const TextEditor: FC<ITextEditorProps> = ({
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
-  const { hightlightCode } = useCodeEditor();
+  const { highlightCode } = useCodeEditor();
 
   const listener = async (/* event */) => {
     const v = await ds.getValue<string>();
@@ -91,7 +91,7 @@ const TextEditor: FC<ITextEditorProps> = ({
             renderElement={renderElement}
             renderLeaf={renderLeaf}
             readOnly={readOnly}
-            decorate={hightlightCode}
+            decorate={highlightCode}
           />
         </Slate>
       ) : (

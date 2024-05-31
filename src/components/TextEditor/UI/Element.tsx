@@ -3,6 +3,7 @@ import { MdDelete } from 'react-icons/md';
 import { Button } from '.';
 import { useFocused, useSelected, useSlate } from 'slate-react';
 import useImage from '../Hooks/useImage';
+import useCodeEditor from '../Hooks/useCodeEditor';
 
 interface Element {
   attributes: any;
@@ -14,6 +15,16 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
   const alignClass = element.align ? `text-${element.align}` : '';
 
   switch (element.type) {
+    case 'code':
+      const { SelectLanguage } = useCodeEditor();
+      return (
+        <>
+          <SelectLanguage element={element} />
+          <pre className="whitespace-pre overflow-x-scroll p-2 space-x-2 bg-zinc-300">
+            <code className={`lang-${element.language}`}>{children}</code>
+          </pre>
+        </>
+      );
     case 'image':
       const selected = useSelected();
       const focused = useFocused();
