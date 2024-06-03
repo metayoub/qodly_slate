@@ -20,7 +20,7 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
       return (
         <>
           <SelectLanguage element={element} />
-          <pre className="whitespace-pre overflow-x-scroll p-2 space-x-2 bg-zinc-300">
+          <pre className="whitespace-pre p-2 space-x-2 bg-zinc-300 ">
             <code className={`lang-${element.language}`}>{children}</code>
           </pre>
         </>
