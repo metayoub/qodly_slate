@@ -15,11 +15,10 @@ import 'prismjs/components/prism-sql';
 import 'prismjs/components/prism-java';
 
 const useCodeEditor = () => {
-
-  const SelectLanguage = ({ element }: { element: any }) => {//select component
+  const SelectLanguage = ({ element }: { element: any }) => {
+    //select component
     const textEditor = useSlate();
     const [selectedLanguage, setLanguage] = useState<string>(element.language || 'javascript');
-
 
     const updateLanguage = (newLanguage: string) => {
       setLanguage(newLanguage);
@@ -55,20 +54,19 @@ const useCodeEditor = () => {
       const language = node.language || 'javascript';
       const codeTokens = Prism.tokenize(editorCode, Prism.languages[language]);
       let start = 0;
-      codeTokens.forEach((token) => {
-        if (typeof token === 'string') {
-          start += token.length;
-        } else {
-          const length = token.content.length;
+      for (const token of codeTokens) {
+        const length = token.length;
+        const end = start + length;
+        if (typeof token !== 'string' && token.type) {
           ranges.push({
             anchor: { path, offset: start },
-            focus: { path, offset: start + length },
-            token: token.type,
+            focus: { path, offset: end },
             code: true,
+            token: token.type,
           });
-          start += length;
         }
-      });
+        start = end;
+      }
     }
     return ranges;
   }, []);
