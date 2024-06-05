@@ -1,7 +1,7 @@
 import { splitDatasourceID, useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Descendant, createEditor } from 'slate';
+import { Descendant, Transforms, createEditor } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
 import { Toolbar, Element, Leaf } from './UI';
@@ -80,6 +80,20 @@ const TextEditor: FC<ITextEditorProps> = ({
     }
   };
 
+  const handlePaste = useCallback((event: any) => {
+      //used to consider pasted lines as one block
+      event.preventDefault();
+      const text = event.clipboardData.getData('text/plain');
+      const formattedText = text.split('\n').join('\n');
+      const newContent = {
+        type: 'paragraph',
+        children: [{ text: formattedText }],
+      };
+      Transforms.insertNodes(editor, newContent);
+    },
+    [editor],
+  );
+
   // TODO: dynamic padding
   return (
     <div ref={connect} style={style} className={cn(className, classNames)}>
@@ -92,6 +106,7 @@ const TextEditor: FC<ITextEditorProps> = ({
             renderLeaf={renderLeaf}
             readOnly={readOnly}
             decorate={highlightCode}
+            onPaste={handlePaste}
           />
         </Slate>
       ) : (
