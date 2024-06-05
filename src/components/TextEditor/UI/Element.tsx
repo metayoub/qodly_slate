@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { MdDelete } from 'react-icons/md';
 import { Button } from '.';
-import { useFocused, useSelected, useSlate } from 'slate-react';
+import { useFocused, useReadOnly, useSelected, useSlate } from 'slate-react';
 import useImage from '../Hooks/useImage';
 import TableToolBar from './TableToolBar';
 
@@ -17,9 +17,10 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
   switch (element.type) {
     case 'table':
       const displayed = useSelected();
+      const isReadOnly = useReadOnly();
       return (
         <div className="relative">
-          {displayed && <TableToolBar />}
+          {displayed && !isReadOnly && <TableToolBar />}
           <table
             className="table-fixed w-full border-collapse border border-gray-400"
             {...attributes}
