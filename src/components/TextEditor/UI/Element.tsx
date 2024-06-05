@@ -18,12 +18,12 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
     case 'code':
       const { SelectLanguage } = useCodeEditor();
       return (
-        <>
+        <div className="relative">
           <SelectLanguage element={element} />
           <pre className="whitespace-pre p-2 space-x-2 bg-zinc-300 ">
             <code className={`lang-${element.language}`}>{children}</code>
           </pre>
-        </>
+        </div>
       );
     case 'image':
       const selected = useSelected();
