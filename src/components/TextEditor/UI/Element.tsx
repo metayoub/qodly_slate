@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { MdDelete } from 'react-icons/md';
 import { Button } from '.';
-import { useFocused, useSelected, useSlate } from 'slate-react';
+import { useFocused, useReadOnly, useSelected, useSlate } from 'slate-react';
 import useImage from '../Hooks/useImage';
 import useCodeEditor from '../Hooks/useCodeEditor';
 
@@ -16,10 +16,11 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
 
   switch (element.type) {
     case 'code':
+      const isReadOnly = useReadOnly();
       const { SelectLanguage } = useCodeEditor();
       return (
         <div className="relative">
-          <SelectLanguage element={element} />
+          {!isReadOnly && <SelectLanguage element={element} />}
           <pre className="whitespace-pre p-2 space-x-2 bg-zinc-300 ">
             <code className={`lang-${element.language}`}>{children}</code>
           </pre>
