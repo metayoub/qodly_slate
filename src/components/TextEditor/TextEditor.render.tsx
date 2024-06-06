@@ -6,9 +6,8 @@ import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
 import { Toolbar, Element, Leaf } from './UI';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
-import withInlines from './Hooks/withInlines';
-import withEmbeds from './Hooks/withEmbeds';
 import handleHotKey from './Utils/Hotkeys';
+import { withHistory } from 'slate-history';
 
 const TextEditor: FC<ITextEditorProps> = ({
   datasource,
@@ -37,7 +36,7 @@ const TextEditor: FC<ITextEditorProps> = ({
 
   const { id: datasourceID } = splitDatasourceID(datasource);
 
-  const [editor] = useState(() => withInlines(withReact(withEmbeds(createEditor()))));
+  const [editor] = useState(() => withReact(withHistory(createEditor())));
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
