@@ -9,6 +9,7 @@ import { BsFillInfoCircleFill } from 'react-icons/bs';
 import withInlines from './Hooks/withInlines';
 import withEmbeds from './Hooks/withEmbeds';
 import useCodeEditor from './Hooks/useCodeEditor';
+import handleHotKey from './Utils/Hotkeys';
 
 const TextEditor: FC<ITextEditorProps> = ({
   datasource,
@@ -107,6 +108,7 @@ const TextEditor: FC<ITextEditorProps> = ({
             readOnly={readOnly}
             decorate={highlightCode}
             onPaste={handlePaste}
+            onKeyDown={(e) => handleHotKey(editor, e)}
           />
         </Slate>
       ) : (

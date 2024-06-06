@@ -32,6 +32,9 @@ const useCodeEditor = () => {
         onChange={(e: any) => updateLanguage(e.target.value)}
         className="absolute right-5 top-2	z-1 p-1"
       >
+        <option value="" disabled>
+          Select language
+        </option>
         <option value="javascript">JavaScript</option>
         <option value="typescript">TypeScript</option>
         <option value="markup">Html</option>
