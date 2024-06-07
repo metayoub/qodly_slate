@@ -18,7 +18,7 @@ const useCodeEditor = () => {
   const SelectLanguage = ({ element }: { element: any }) => {
     //select component
     const textEditor = useSlate();
-    const [selectedLanguage, setLanguage] = useState<string>(element.language || 'javascript');
+    const [selectedLanguage, setLanguage] = useState<string>(element.language || '');
 
     const updateLanguage = (newLanguage: string) => {
       setLanguage(newLanguage);
@@ -54,7 +54,7 @@ const useCodeEditor = () => {
 
     if (node.children && node.children[0] && node.language) {
       const editorCode = node.children[0].text;
-      const language = node.language || 'javascript';
+      const language = node.language || '';
       const codeTokens = Prism.tokenize(editorCode, Prism.languages[language]);
       let start = 0;
       for (const token of codeTokens) {
