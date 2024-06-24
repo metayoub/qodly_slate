@@ -8,6 +8,8 @@ import { Toolbar, Element, Leaf } from './UI';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
 import handleHotKey from './Utils/Hotkeys';
 import { withHistory } from 'slate-history';
+import withEmbeds from './Hooks/withEmbeds';
+import withInlines from './Hooks/withInlines';
 
 const TextEditor: FC<ITextEditorProps> = ({
   datasource,
@@ -36,7 +38,7 @@ const TextEditor: FC<ITextEditorProps> = ({
 
   const { id: datasourceID } = splitDatasourceID(datasource);
 
-  const [editor] = useState(() => withReact(withHistory(createEditor())));
+  const [editor] = useState(() => withInlines(withReact(withHistory(withEmbeds(createEditor())))));
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
