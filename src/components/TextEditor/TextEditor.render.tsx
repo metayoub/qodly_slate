@@ -6,9 +6,10 @@ import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
 import { Toolbar, Element, Leaf } from './UI';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
-import withInlines from './Hooks/withInlines';
+import { withHistory } from 'slate-history';
 import withEmbeds from './Hooks/withEmbeds';
 import useCodeEditor from './Hooks/useCodeEditor';
+import withInlines from './Hooks/withInlines';
 import handleHotKey from './Utils/Hotkeys';
 
 const TextEditor: FC<ITextEditorProps> = ({
@@ -38,7 +39,7 @@ const TextEditor: FC<ITextEditorProps> = ({
 
   const { id: datasourceID } = splitDatasourceID(datasource);
 
-  const [editor] = useState(() => withInlines(withReact(withEmbeds(createEditor()))));
+  const [editor] = useState(() => withInlines(withReact(withHistory(withEmbeds(createEditor())))));
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
@@ -81,7 +82,8 @@ const TextEditor: FC<ITextEditorProps> = ({
     }
   };
 
-  const handlePaste = useCallback((event: any) => {
+  const handlePaste = useCallback(
+    (event: any) => {
       //used to consider pasted lines as one block
       event.preventDefault();
       const text = event.clipboardData.getData('text/plain');
