@@ -4,6 +4,7 @@ import { Button } from '.';
 import { useFocused, useReadOnly, useSelected, useSlate } from 'slate-react';
 import useImage from '../Hooks/useImage';
 import TableToolBar from './TableToolBar';
+import useCodeEditor from '../Hooks/useCodeEditor';
 
 interface Element {
   attributes: any;
@@ -13,11 +14,11 @@ interface Element {
 
 const Element: FC<Element> = ({ attributes, children, element }) => {
   const alignClass = element.align ? `text-${element.align}` : '';
+  const isReadOnly = useReadOnly();
 
   switch (element.type) {
     case 'table':
       const displayed = useSelected();
-      const isReadOnly = useReadOnly();
       return (
         <div className="relative">
           {displayed && !isReadOnly && <TableToolBar />}
@@ -40,6 +41,16 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
         <td className="border border-gray-400 p-2" {...attributes}>
           {children}
         </td>
+      );
+    case 'code':
+      const { SelectLanguage } = useCodeEditor();
+      return (
+        <div className="relative">
+          {!isReadOnly && <SelectLanguage element={element} />}
+          <pre className="whitespace-pre p-2 space-x-2 bg-zinc-300 ">
+            <code className={`lang-${element.language}`}>{children}</code>
+          </pre>
+        </div>
       );
     case 'image':
       const selected = useSelected();
