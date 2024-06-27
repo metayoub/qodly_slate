@@ -3,6 +3,7 @@ import { MdDelete } from 'react-icons/md';
 import { Button } from '.';
 import { useFocused, useReadOnly, useSelected, useSlate } from 'slate-react';
 import useImage from '../Hooks/useImage';
+import useCodeEditor from '../Hooks/useCodeEditor';
 import TableToolBar from './TableToolBar';
 
 interface Element {
@@ -13,11 +14,21 @@ interface Element {
 
 const Element: FC<Element> = ({ attributes, children, element }) => {
   const alignClass = element.align ? `text-${element.align}` : '';
+  const isReadOnly = useReadOnly();
 
   switch (element.type) {
+    case 'code':
+      const { SelectLanguage } = useCodeEditor();
+      return (
+        <div className="relative">
+          {!isReadOnly && <SelectLanguage element={element} />}
+          <pre className="whitespace-pre p-2 space-x-2 bg-zinc-300 ">
+            <code className={`lang-${element.language}`}>{children}</code>
+          </pre>
+        </div>
+      );
     case 'table':
       const displayed = useSelected();
-      const isReadOnly = useReadOnly();
       return (
         <div className="relative">
           {displayed && !isReadOnly && <TableToolBar />}
