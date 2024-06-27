@@ -10,6 +10,7 @@ import withInlines from './Hooks/withInlines';
 import withEmbeds from './Hooks/withEmbeds';
 import useCodeEditor from './Hooks/useCodeEditor';
 import handleHotKey from './Utils/Hotkeys';
+import { withHistory } from 'slate-history';
 
 const TextEditor: FC<ITextEditorProps> = ({
   datasource,
@@ -38,7 +39,7 @@ const TextEditor: FC<ITextEditorProps> = ({
 
   const { id: datasourceID } = splitDatasourceID(datasource);
 
-  const [editor] = useState(() => withInlines(withReact(withEmbeds(createEditor()))));
+  const [editor] = useState(() => withInlines(withReact(withHistory(withEmbeds(createEditor())))));
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
