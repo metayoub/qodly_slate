@@ -22,7 +22,6 @@ const ClearButton: FC<ClearButton> = ({ icon: Icon, readonly }) => {
         'bold',
         'italic',
         'underline',
-        'code',
         'strikethrough',
         'color',
         'backgroundColor',
@@ -39,6 +38,21 @@ const ClearButton: FC<ClearButton> = ({ icon: Icon, readonly }) => {
           !Editor.isEditor(n) && SlateElement.isElement(n) && (n as LinkElement).type === 'link',
         split: true,
       });
+      //code case
+      const [codeBlock] = Editor.nodes(editor, {
+        match: (n) =>
+          !Editor.isEditor(n) && SlateElement.isElement(n) && (n as any).type === 'code',
+      });
+
+      if (codeBlock) {
+        let newProperties: Partial<SlateElement> | any;
+        let property = 'language';
+        newProperties = {
+          type: 'paragraph',
+        };
+        Transforms.setNodes(editor, { [property]: undefined });
+        Transforms.setNodes<SlateElement>(editor, newProperties);
+      }
     }
   };
 

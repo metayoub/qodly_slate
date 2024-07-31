@@ -59,6 +59,10 @@ const BlockButton: FC<BlockButton> = ({ icon: Icon, format, readonly }) => {
       const block = { type: format, children: [] };
       Transforms.wrapNodes(editor, block);
     }
+    if (format === 'code' && !isBlockActive(editor, format, 'type')) {
+      let property = 'language';
+      Transforms.setNodes(editor, { [property]: undefined });
+    }
   };
 
   return (
