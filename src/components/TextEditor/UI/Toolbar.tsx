@@ -33,7 +33,7 @@ import TableButton from './TableButton';
 
 const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
   return (
-    <div id="toolbar" className="flex p-2 gap-2 border-b">
+    <div id="toolbar" className="flex p-2 gap-2 border-b w-full flex-wrap">
       <MarkButton icon={MdOutlineFormatBold} format="bold" readonly={readonly} />
       <MarkButton icon={MdOutlineFormatItalic} format="italic" readonly={readonly} />
       <MarkButton icon={MdOutlineFormatUnderlined} format="underline" readonly={readonly} />
