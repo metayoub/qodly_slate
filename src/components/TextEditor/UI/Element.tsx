@@ -42,7 +42,7 @@ const Element: FC<Element> = ({ attributes, children, element }) => {
       );
     case 'table-row':
       return (
-        <tr className="even:bg-gray-200 hover:bg-gray-300" {...attributes}>
+        <tr className={!isReadOnly && 'even:bg-gray-200 hover:bg-gray-300'} {...attributes}>
           {children}
         </tr>
       );
