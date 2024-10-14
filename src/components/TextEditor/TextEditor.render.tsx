@@ -28,9 +28,12 @@ const TextEditor: FC<ITextEditorProps> = ({
   ];
   const [value, updateValue] = useState<Descendant[] | null>(null);
 
-  const setValue = (value: Descendant[]) => {
-    editor.children = value;
-    updateValue(value);
+  const setValue = (newValue: Descendant[]) => {
+    // compare contents then update to avoid infinite loop
+    if (JSON.stringify(value) !== JSON.stringify(newValue)) {
+      editor.children = newValue;
+      updateValue(newValue);
+    }
   };
 
   const {
@@ -57,14 +60,7 @@ const TextEditor: FC<ITextEditorProps> = ({
   };
 
   useEffect(() => {
-    //handles iterator datasource
-    if (!ds || !datasourceID.startsWith('$')) return;
-    listener();
-  }, []);
-
-  useEffect(() => {
-    //handles standard ds
-    if (!ds || datasourceID.startsWith('$')) return;
+    if (!ds) return;
     listener();
 
     ds.addListener('changed', listener);
