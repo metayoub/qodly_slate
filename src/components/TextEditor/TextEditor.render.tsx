@@ -11,7 +11,7 @@ import withEmbeds from './Hooks/withEmbeds';
 import useCodeEditor from './Hooks/useCodeEditor';
 import withInlines from './Hooks/withInlines';
 import handleHotKey from './Utils/Hotkeys';
-
+import isEqual from 'lodash/isEqual';
 const TextEditor: FC<ITextEditorProps> = ({
   datasource,
   readOnly,
@@ -30,7 +30,7 @@ const TextEditor: FC<ITextEditorProps> = ({
 
   const setValue = (newValue: Descendant[]) => {
     // compare contents then update to avoid infinite loop
-    if (JSON.stringify(value) !== JSON.stringify(newValue)) {
+    if (!isEqual(newValue, value)) {
       editor.children = newValue;
       updateValue(newValue);
     }
