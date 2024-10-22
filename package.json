@@ -2,7 +2,7 @@
   "app_id": "qodly_783daecc8bfc2a76fd81",
   "name": "qodly-slate",
   "private": true,
-  "version": "0.1.2",
+  "version": "0.2.1",
   "type": "module",
   "author": {
     "name": "Qodly Team",
@@ -38,13 +38,13 @@
     "react": "^17.0.2",
     "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
-    "react-prismjs": "^1.0.4",
+    "react-prismjs": "^1.0.3",
     "slate": "^0.103.0",
     "slate-history": "^0.100.0",
     "slate-react": "^0.99.0"
   },
   "devDependencies": {
-    "@qodly/cli": "^0.1.46",
+    "@qodly/cli": "^0.2.16",
     "@types/is-url": "^1.2.32",
     "@types/prismjs": "^1.26.4",
     "@types/react": "^18.2.48",
