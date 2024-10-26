@@ -1,7 +1,7 @@
 import { splitDatasourceID, useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Descendant, Transforms, createEditor } from 'slate';
+import { Descendant, Transforms, createEditor, Node } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
 import { Toolbar, Element, Leaf } from './UI';
@@ -12,6 +12,7 @@ import useCodeEditor from './Hooks/useCodeEditor';
 import withInlines from './Hooks/withInlines';
 import handleHotKey from './Utils/Hotkeys';
 import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
 const TextEditor: FC<ITextEditorProps> = ({
   datasource,
   readOnly,
@@ -33,6 +34,7 @@ const TextEditor: FC<ITextEditorProps> = ({
     if (!isEqual(newValue, value)) {
       editor.children = newValue;
       updateValue(newValue);
+      Transforms.deselect(editor);
     }
   };
 
@@ -48,19 +50,32 @@ const TextEditor: FC<ITextEditorProps> = ({
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
   const { highlightCode } = useCodeEditor();
 
-  const listener = async (/* event */) => {
-    const v = await ds.getValue<string>();
-    try {
-      const parsedValue = v ? JSON.parse(v) : initialValue;
-      setValue(parsedValue);
-    } catch (error) {
-      const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
-      setValue(slateContent);
-    }
+  const serialize = (value: Descendant[]) => {
+    return value.map((n) => Node.string(n)).join('\n');
+  };
+
+  const deserialize = (string: string) => {
+    return string.split('\n').map((line) => {
+      return {
+        children: [{ text: line }],
+      };
+    });
   };
 
   useEffect(() => {
     if (!ds) return;
+
+    const listener = async (/* event */) => {
+      const v = await ds.getValue<string>();
+      try {
+        const parsedValue = v ? deserialize(v) : initialValue;
+        setValue(parsedValue);
+      } catch (error) {
+        const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
+        setValue(slateContent);
+      }
+    };
+
     listener();
 
     ds.addListener('changed', listener);
@@ -71,11 +86,18 @@ const TextEditor: FC<ITextEditorProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ds]);
 
+  const debouncedSave = useCallback(
+    debounce((newValue) => {
+      if (ds && !datasourceID.startsWith('$')) {
+        //you can only set the value on non iterator ds
+        ds.setValue(null, serialize(newValue));
+      }
+    }, 1000), // 1 s debounce delay
+    [ds, datasourceID],
+  );
+
   const handleOnChange = (newValue: any) => {
-    if (ds && !datasourceID.startsWith('$')) {
-      //you can only set the value on non iterator ds
-      ds.setValue(null, JSON.stringify(newValue));
-    }
+    debouncedSave(newValue);
   };
 
   const handlePaste = useCallback(
