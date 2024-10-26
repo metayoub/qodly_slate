@@ -1,6 +1,6 @@
 import { splitDatasourceID, useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState, useRef, MutableRefObject } from 'react';
 import { Descendant, Transforms, createEditor } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ITextEditorProps } from './TextEditor.config';
@@ -41,26 +41,29 @@ const TextEditor: FC<ITextEditorProps> = ({
   } = useSources();
 
   const { id: datasourceID } = splitDatasourceID(datasource);
-
+  const editorWrapperRef = useRef<HTMLDivElement | null>(
+    null,
+  ) as MutableRefObject<HTMLDivElement | null>; // Explicitly type as MutableRefObject
   const [editor] = useState(() => withInlines(withReact(withHistory(withEmbeds(createEditor())))));
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
   const { highlightCode } = useCodeEditor();
 
-  const listener = async (/* event */) => {
-    const v = await ds.getValue<string>();
-    try {
-      const parsedValue = v ? JSON.parse(v) : initialValue;
-      setValue(parsedValue);
-    } catch (error) {
-      const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
-      setValue(slateContent);
-    }
-  };
-
   useEffect(() => {
     if (!ds) return;
+
+    const listener = async (/* event */) => {
+      const v = await ds.getValue<string>();
+      try {
+        const parsedValue = v ? JSON.parse(v) : initialValue;
+        setValue(parsedValue);
+      } catch (error) {
+        const slateContent = [{ type: 'paragraph', children: [{ text: v }] }];
+        setValue(slateContent);
+      }
+    };
+
     listener();
 
     ds.addListener('changed', listener);
@@ -70,6 +73,19 @@ const TextEditor: FC<ITextEditorProps> = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ds]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (editorWrapperRef.current && !editorWrapperRef.current.contains(event.target as Node)) {
+        Transforms.deselect(editor);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [editorWrapperRef]);
 
   const handleOnChange = (newValue: any) => {
     if (ds && !datasourceID.startsWith('$')) {
@@ -95,7 +111,14 @@ const TextEditor: FC<ITextEditorProps> = ({
 
   // TODO: dynamic padding
   return (
-    <div ref={connect} style={style} className={cn(className, classNames)}>
+    <div
+      ref={(node) => {
+        editorWrapperRef.current = node;
+        connect(node);
+      }}
+      style={style}
+      className={cn(className, classNames)}
+    >
       {value ? (
         <Slate editor={editor as ReactEditor} initialValue={value} onChange={handleOnChange}>
           {!readOnly && <Toolbar readonly={readOnly} />}
