@@ -26,10 +26,12 @@ import {
   MdOutlineFormatColorFill,
   MdOutlineFormatClear,
   MdOutlineGridOn,
+  MdEmojiEmotions,
 } from 'react-icons/md';
 import ColorPickerButton from './ColorPickerButton';
 import ClearButton from './ClearButton';
 import TableButton from './TableButton';
+import EmojiButton from './EmojiButton';
 
 const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
   return (
@@ -59,6 +61,7 @@ const Toolbar: FC<ToolbarProps> = ({ readonly }) => {
       <ImageButton icon={MdOutlineImage} readonly={readonly} />
       <LinkButton icon={MdOutlineInsertLink} readonly={readonly} />
       <VideoButton icon={MdOutlineVideoFile} readonly={readonly} />
+      <EmojiButton icon={MdEmojiEmotions} readonly={readonly} />
       <ClearButton icon={MdOutlineFormatClear} readonly={readonly} />
     </div>
   );
